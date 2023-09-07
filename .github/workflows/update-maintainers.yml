@@ -159,7 +159,7 @@ jobs:
           git config --global user.name "asyncapi-bot"
           git add .
           git commit -m "Update MAINTAINERS.yaml"
-          git push https://${{ env.GITHUB_TOKEN }}@github.com/asyncapi/community
+          git push https://${{ env.GITHUB_TOKEN }}@github.com/${{ github.repository_owner }}/community
 
       - name: Create PR
         working-directory: ./community
