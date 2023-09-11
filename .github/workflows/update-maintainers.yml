@@ -77,8 +77,8 @@ jobs:
             const addedUsernames = currentUsernames.filter(username => !previousUsernames.includes(username));
             const removedUsernames = previousUsernames.filter(username => !currentUsernames.includes(username));
 
-            core.info(`ADDED_USERNAMES=${addedUsernames.join(', ')}`);
-            core.info(`REMOVED_USERNAMES=${removedUsernames.join(', ')}`);
+            console.log(`ADDED_USERNAMES=${addedUsernames.join(', ')}`);
+            console.log(`REMOVED_USERNAMES=${removedUsernames.join(', ')}`);
 
             // Update MAINTAINERS.yaml
             const maintainersFile = './community/MAINTAINERS.yaml';
@@ -89,7 +89,7 @@ jobs:
             for (const username of addedUsernames) {
               // Exclude bot accounts
               if (username === 'asyncapi-bot' || username === 'asyncapi-bot-eve') {
-                core.info('Skipping bot account:', username);
+                console.log('Skipping bot account:', username);
                 continue; // Skip the iteration for bot accounts
               }
 
@@ -109,14 +109,14 @@ jobs:
                   newMaintainer.twitter = twitterUsername;
                 }
                 maintainers.push(newMaintainer);
-                core.info('Added maintainer:', username);
+                console.log('Added maintainer:', username);
               } else {
                 // If the maintainer already exists, check if the current repo is in their list
                 if (!maintainer.repos.includes(repoName)) {
                   maintainer.repos.push(repoName);
-                  core.info('Added repository to existing maintainer:', username);
+                  console.log('Added repository to existing maintainer:', username);
                 } else {
-                  core.info(`Maintainer ${username} already exists and already has the repo. Skipping addition.`);
+                  console.log(`Maintainer ${username} already exists and already has the repo. Skipping addition.`);
                 }
               }
             }
@@ -130,23 +130,23 @@ jobs:
 
                 if (repoIndex !== -1) {
                   maintainer.repos.splice(repoIndex, 1);
-                  core.info(`Removed repository ${repoName} from maintainer ${username}`);
+                  console.log(`Removed repository ${repoName} from maintainer ${username}`);
                   if (maintainer.repos.length === 0) {
                     maintainers.splice(index, 1);
-                    core.info(`Removed maintainer ${username} as they have no other repositories`);
+                    console.log(`Removed maintainer ${username} as they have no other repositories`);
                   }
                 } else {
-                  core.info(`Repository ${repoName} not found for maintainer ${username}`);
+                  console.log(`Repository ${repoName} not found for maintainer ${username}`);
                 }
               } else {
-                core.info(`Maintainer ${username} does not exist. Skipping removal.`);
+                console.log(`Maintainer ${username} does not exist. Skipping removal.`);
               }
             }
 
             // Write updated MAINTAINERS.yaml file
             const updatedMaintainers = yaml.safeDump(maintainers);
             fs.writeFileSync(maintainersFile, updatedMaintainers);
-            core.info('Updated MAINTAINERS.yaml:', updatedMaintainers);
+            console.log('Updated MAINTAINERS.yaml:', updatedMaintainers);
 
       - name: Create new branch
         working-directory: ./community
