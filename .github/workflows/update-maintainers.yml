@@ -99,7 +99,10 @@ jobs:
               if (!maintainer) {
                 const { data } = await github.rest.users.getByUsername({ username });
                 const twitterUsername = data.twitter_username;
+                const name = data.name;
+                
                 const newMaintainer = {
+                  name: name,
                   github: username,
                   isTscMember: false,
                   repos: [repoName]
