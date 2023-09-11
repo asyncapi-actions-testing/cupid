@@ -77,8 +77,6 @@ jobs:
             const addedUsernames = currentUsernames.filter(username => !previousUsernames.includes(username));
             const removedUsernames = previousUsernames.filter(username => !currentUsernames.includes(username));
 
-            core.info('Added Usernames:', addedUsernames);
-            core.info('Removed Usernames:', removedUsernames);
             core.info(`ADDED_USERNAMES=${addedUsernames.join(', ')}`);
             core.info(`REMOVED_USERNAMES=${removedUsernames.join(', ')}`);
 
@@ -100,7 +98,7 @@ jobs:
                 const { data } = await github.rest.users.getByUsername({ username });
                 const twitterUsername = data.twitter_username;
                 const name = data.name;
-                
+
                 const newMaintainer = {
                   name: name,
                   github: username,
